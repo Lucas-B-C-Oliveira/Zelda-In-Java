@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
+import com.herkulstudios.entities.Entity;
+import com.herkulstudios.entities.Player;
+import com.herkulstudios.graficos.Spritesheet;
+
 
 
 public class Game extends Canvas implements Runnable {
@@ -22,13 +27,21 @@ public class Game extends Canvas implements Runnable {
 	
 	private BufferedImage image;
 	
-	//278x307 player width and height ################
+	public List<Entity> entities;
+	public Spritesheet spritesheet;
+	
+	
 	
 	public Game() {
 
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		entities = new ArrayList<Entity>();
+		spritesheet = new Spritesheet("/spritesheet.png");
+		
+		Player player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+		entities.add(player);
 	}
 	
 	public void initFrame(){
@@ -66,7 +79,16 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
-	public void update() {	
+	public void update() {
+		
+		//####### Entitie's Update
+		
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.update();
+		}
+		
+		//########################
 			
 	}
 	
@@ -83,11 +105,20 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(new Color(5, 5, 50));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		/* Renderização do jogo */
+		/*********************** Game Render **************************/
 		
 		//Graphics2D g2 = (Graphics2D) g;
+		
+		//####### Entitie's Render
+		
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.render(g);
+		}
+		
+		//########################
 
-		/***/
+		/***************************************************************/
 		
 		g.dispose();
 		g = bs.getDrawGraphics();
