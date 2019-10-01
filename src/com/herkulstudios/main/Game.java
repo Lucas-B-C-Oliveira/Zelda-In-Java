@@ -14,13 +14,13 @@ import javax.swing.JFrame;
 import com.herkulstudios.entities.Entity;
 import com.herkulstudios.entities.Player;
 import com.herkulstudios.graficos.Spritesheet;
+import com.herkulstudios.world.World;
 
 
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning;
 	private final int WIDTH = 240;
@@ -33,6 +33,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public List<Entity> entities;
 	public static Spritesheet spritesheet;
+	public static JFrame frame;
+	public static World world;
 	
 	
 	
@@ -44,6 +46,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
+		world = new World("/map.png");
 		
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -107,12 +110,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(5, 225, 50));
+		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		/*********************** Game Render **************************/
 		
-		//Graphics2D g2 = (Graphics2D) g;
+		//####### World Render
+		
+		world.render(g);
+		
+		//########################
+		
 		
 		//####### Entitie's Render
 		
