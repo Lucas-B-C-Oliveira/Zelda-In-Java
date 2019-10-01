@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private Player player;
 	
 	public List<Entity> entities;
-	public Spritesheet spritesheet;
+	public static Spritesheet spritesheet;
 	
 	
 	
@@ -107,7 +107,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(5, 5, 50));
+		g.setColor(new Color(5, 225, 50));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		/*********************** Game Render **************************/
