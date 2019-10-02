@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.herkulstudios.entities.*;
+import com.herkulstudios.main.Game;
+
 public class World {
 	
 	private Tile[] tiles;
@@ -26,7 +29,9 @@ public class World {
 					
 					int pixelAtual = pixels[xx + (yy * map.getWidth())];
 					
-					if(pixelAtual == 0xFFFF0000) {
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+					
+					if(pixelAtual == 0xFF000000) {
 						
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 						
@@ -38,13 +43,30 @@ public class World {
 					}
 					else if (pixelAtual == 0xFF0008FF) {
 						
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+						//Player
+						Game.player.setX(xx * 16);
+						Game.player.setY(yy * 16);
 						
 					}
-					else {
+					else if(pixelAtual == 0xFFFF0000) {
 						
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+						Game.entities.add(new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_PACK_ENTITY));
+
 						
+					}
+					else if (pixelAtual == 0xFFFF4E00) {
+						
+						Game.entities.add(new Weapon(xx * 16, yy * 16, 16, 16, Entity.WEAPON_PACK_ENTITY));
+						
+					}
+					else if (pixelAtual == 0xFFFF7CAE) {
+						//LifePAck
+						Game.entities.add(new Lifepack(xx * 16, yy * 16, 16, 16, Entity.LIFE_PACK_ENTITY));
+						
+					}
+					else if (pixelAtual == 0xFFFFFB49) {
+						//Bullet
+						Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_PACK_ENTITY));
 					}
 				}
 				

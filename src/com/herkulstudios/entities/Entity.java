@@ -3,7 +3,15 @@ package com.herkulstudios.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.herkulstudios.main.Game;
+
 public class Entity {
+	
+	public static BufferedImage LIFE_PACK_ENTITY = Game.spritesheet.getSprite(6 * 16, 0, 16, 16);
+	public static BufferedImage WEAPON_PACK_ENTITY = Game.spritesheet.getSprite(7 * 16, 0, 16, 16);
+	public static BufferedImage BULLET_PACK_ENTITY = Game.spritesheet.getSprite(6 * 16, 16, 16, 16);
+	public static BufferedImage ENEMY_PACK_ENTITY = Game.spritesheet.getSprite(7 * 16, 16, 16, 16);
+	
 	
 	protected double x;
 	protected double y;
