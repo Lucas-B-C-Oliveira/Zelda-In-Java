@@ -56,22 +56,22 @@ public class Player extends Entity{
 		
 		moved = false;
 		
-		if(right) {
+		if(right && World.isFree((int)(x + speed), this.getY())) {
 			moved = true;
 			dir = right_dir;
 			x += speed;
 		}
-		else if(left) {
+		else if(left && World.isFree((int)(x - speed), this.getY())) {
 			moved = true;
 			dir = left_dir;
 			x -= speed;
 		}
 		
-		if(down) {
+		if(down && World.isFree(this.getX(), (int)(y - speed))) {
 			moved = true;
 			y += speed;
 		}
-		else if (up) {
+		else if (up && World.isFree(this.getX(), (int)(y + speed))) {
 			moved = true;
 			y -= speed;
 		}
