@@ -23,14 +23,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
 	private boolean isRunning;
-	private final int WIDTH = 240;
-	private final int HEIGHT = 160;
 	private final int SCALE = 3;
-	
 	private BufferedImage image;
 	
 
-	
+	public static final int WIDTH = 240;
+	public static final int HEIGHT = 160;
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
 	public static JFrame frame;
