@@ -22,6 +22,7 @@ public class World {
 			WIDTH = map.getWidth();
 			HEIGHT = map.getHeight();
 			tiles = new Tile[map.getWidth() * map.getHeight()];
+			
 			map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
 			
 			for(int xx = 0; xx < map.getHeight(); xx++) {
@@ -40,6 +41,7 @@ public class World {
 					else if(pixelAtual == 0xFFFFFFFF) {
 						
 						tiles[xx + (yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Tile.TILE_WALL);
+						
 						
 					}
 					else if (pixelAtual == 0xFF0008FF) {
@@ -94,6 +96,11 @@ public class World {
 		int x4 = (xnext + TILE_SIZE - 1) / TILE_SIZE;
 		int y4 = (ynext + TILE_SIZE -1) / TILE_SIZE;
 		
+		/*System.out.print(!((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile) ||
+				 (tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile) ||
+				 (tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile) || 
+				 (tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile))); */
+		
 		return !((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile) ||
 				 (tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile) ||
 				 (tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile) || 
@@ -114,8 +121,12 @@ public class World {
 			
 			for(int yy = ystart; yy <= yfinal; yy++) {
 				
-				if(xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT)
+				if(xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT) {
+					System.out.print("EntrouAqui");
 					continue;
+					
+				}
+					
 				
 				Tile tile = tiles[xx + (yy * WIDTH)];
 				tile.render(g);
