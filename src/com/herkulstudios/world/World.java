@@ -52,8 +52,9 @@ public class World {
 						
 					}
 					else if(pixelAtual == 0xFFFF0000) {
-						
-						Game.entities.add(new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_PACK_ENTITY));
+						Enemy en = new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_PACK_ENTITY);
+						Game.entities.add(en);
+						Game.enemies.add(en);
 
 						
 					}
@@ -122,7 +123,6 @@ public class World {
 			for(int yy = ystart; yy <= yfinal; yy++) {
 				
 				if(xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT) {
-					System.out.print("EntrouAqui");
 					continue;
 					
 				}
