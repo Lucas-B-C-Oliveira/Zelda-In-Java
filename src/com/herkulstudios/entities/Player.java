@@ -12,12 +12,14 @@ public class Player extends Entity{
 	public boolean left, right, down, up;
 	public double speed = 1.4;
 	
+	public int ammo;
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
 	public static double life = 100, maxLife= 100;
 	
 	private int frames = 0, maxFrames = 5;
 	private int index = 0, maxIndex = 3;
+
 	private boolean moved = false;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
@@ -41,7 +43,8 @@ public class Player extends Entity{
 	
 	public void update() {
 		move();
-		checkItems();
+		checkCollisionWithLifePack();
+		checkCollisionWithAmmo();
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
@@ -102,7 +105,22 @@ public class Player extends Entity{
 		}
 	}
 	
-	public void checkItems() {
+	public void checkCollisionWithAmmo() {
+		for (int i = 0; i < Game.entities.size(); i++) {
+			Entity e = Game.entities.get(i);
+			
+			if(e instanceof Bullet) {
+				if(Entity.isColliding(this, e)) {
+					
+					ammo+=10;
+					
+					Game.entities.remove(i);
+				}
+			}
+		}
+	}
+	
+	public void checkCollisionWithLifePack() {
 		for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			
