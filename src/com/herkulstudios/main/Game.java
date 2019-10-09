@@ -18,6 +18,7 @@ import com.herkulstudios.entities.Enemy;
 import com.herkulstudios.entities.Entity;
 import com.herkulstudios.entities.Player;
 import com.herkulstudios.graficos.Spritesheet;
+import com.herkulstudios.graficos.UI;
 import com.herkulstudios.world.World;
 
 
@@ -40,6 +41,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	public UI ui;
 	
 	
 	
@@ -49,6 +51,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
+		
+		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -136,6 +140,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			Entity e = entities.get(i);
 			e.render(g);
 		}
+		
+		//########################
+		
+		//####### UI Render
+		
+		ui.render(g);
 		
 		//########################
 

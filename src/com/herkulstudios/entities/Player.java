@@ -14,7 +14,7 @@ public class Player extends Entity{
 	
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
-	public int life = 100;
+	public static double life = 100, maxLife= 100;
 	
 	private int frames = 0, maxFrames = 5;
 	private int index = 0, maxIndex = 3;
