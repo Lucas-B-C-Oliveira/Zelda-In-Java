@@ -24,6 +24,7 @@ public class Player extends Entity{
 	private int index = 0, maxIndex = 3;
 	private int damageFrames = 0;
 
+	private boolean hasGun = false;
 	private boolean moved = false;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
@@ -61,6 +62,7 @@ public class Player extends Entity{
 		move();
 		checkCollisionWithLifePack();
 		checkCollisionWithAmmo();
+		checkCollisionWithGun();
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
@@ -129,6 +131,21 @@ public class Player extends Entity{
 		}
 	}
 	
+	public void checkCollisionWithGun() {
+		for (int i = 0; i < Game.entities.size(); i++) {
+			Entity e = Game.entities.get(i);
+			
+			if(e instanceof Weapon) {
+				if(Entity.isColliding(this, e)) {
+					
+					hasGun = true;
+					
+					Game.entities.remove(i);
+				}
+			}
+		}
+	}
+	
 	public void checkCollisionWithAmmo() {
 		for (int i = 0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
@@ -170,11 +187,18 @@ public class Player extends Entity{
 				
 				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 				
+				if(hasGun) {
+					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + 5, this.getY() - Camera.y + 2, null);
+				}
+				
 			}
 			else if(dir == left_dir) {
 				
 				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 				
+				if(hasGun) {
+					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - 5, this.getY() - Camera.y + 2, null);
+				}
 			}
 		}
 		else {
