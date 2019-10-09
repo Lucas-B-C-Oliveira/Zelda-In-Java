@@ -46,14 +46,11 @@ public class Enemy extends Entity {
 		}
 		else {
 			
-			if(Game.player.life <= 0) {
-				//GameOver
-				System.exit(1); // Fechar a Janela
-			}
+
 			
 			if(Game.rand.nextInt(100) < 10) {
+				Game.player.isDamaged = true;
 				Game.player.life-= Game.rand.nextInt(2);
-				System.out.print(Game.player.life + " ");
 			}
 
 
