@@ -65,7 +65,9 @@ public class World {
 					}
 					else if (pixelAtual == 0xFFFF7CAE) {
 						//LifePAck
-						Game.entities.add(new Lifepack(xx * 16, yy * 16, 16, 16, Entity.LIFE_PACK_ENTITY));
+						Lifepack pack = new Lifepack(xx * 16, yy * 16, 16, 16, Entity.LIFE_PACK_ENTITY);
+						pack.setMask(8 , 8 , 8 , 8);
+						Game.entities.add(pack);
 						
 					}
 					else if (pixelAtual == 0xFFFFFB49) {
