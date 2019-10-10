@@ -13,6 +13,7 @@ public class Player extends Entity{
 	
 	public boolean left, right, down, up;
 	public boolean isDamaged = false;
+	public boolean shoot = false;
 	public double speed = 1.4;
 	
 	public int ammo;
@@ -50,6 +51,33 @@ public class Player extends Entity{
 	
 	public void update() {
 		
+
+		CheckDeath();
+		move();
+		checkCollisionWithLifePack();
+		checkCollisionWithAmmo();
+		checkCollisionWithGun();
+		cameraOffset();
+		shoot();
+		
+		
+
+	}
+	
+	public void render(Graphics g) {
+		
+		renderAnimation(g);
+		
+		
+	}
+	
+	private void cameraOffset() {
+		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
+	}
+	
+	private void CheckDeath() {
+		
 		if(Game.player.life <= 0) {
 			Game.entities = new ArrayList<Entity>();
 			Game.enemies = new ArrayList<Enemy>();
@@ -59,19 +87,30 @@ public class Player extends Entity{
 			Game.world = new World("/map.png");
 		}
 		
-		move();
-		checkCollisionWithLifePack();
-		checkCollisionWithAmmo();
-		checkCollisionWithGun();
-		
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 	
-	public void render(Graphics g) {
+	private void shoot() {
 		
-		renderAnimation(g);
-		
+		if(shoot && hasGun && ammo > 0) {
+			ammo--;
+			shoot = false;
+			
+			int dx = 0;
+			int px = 0;
+			int py = 8;
+			
+			if(dir == right_dir) {
+				dx = 1;
+				px = 18;
+			}
+			else {
+				dx = -1;
+				px = -8;
+			}
+			
+			BulletShoot bullet = new BulletShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, 0);
+			Game.bullets.add(bullet);
+		}
 		
 	}
 	
