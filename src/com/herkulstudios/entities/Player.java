@@ -119,14 +119,22 @@ public class Player extends Entity{
 			
 			ammo--;
 			mouseShoot = false;
+				
+			int px = 0;
+			int py = 8;
+			double angle = 0;
 			
-			double angle = Math.atan2(mouseY - (this.getY() + 8 - Camera.y), mouseX - (this.getX() + 8 - Camera.x));
-			
+			if(dir == right_dir) {
+				px = 18;
+				angle = Math.atan2(mouseY - (this.getY() + py - Camera.y), mouseX - (this.getX() + px - Camera.x));
+			}
+			else {
+				px = -8;
+				angle = Math.atan2(mouseY - (this.getY() + py - Camera.y), mouseX - (this.getX() + px - Camera.x));
+			}
 			
 			double dx = Math.cos(angle);
 			double dy = Math.sin(angle);
-			int px = 8;
-			int py = 8;
 						
 			BulletShoot bullet = new BulletShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
 			Game.bullets.add(bullet);
