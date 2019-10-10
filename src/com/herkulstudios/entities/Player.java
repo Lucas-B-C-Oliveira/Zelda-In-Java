@@ -13,12 +13,15 @@ public class Player extends Entity{
 	
 	public boolean left, right, down, up;
 	public boolean isDamaged = false;
-	public boolean shoot = false;
+	public boolean shoot = false, mouseShoot = false;
 	public double speed = 1.4;
 	
 	public int ammo;
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
+	public int mouseX, mouseY;
+	
+	
 	public double life = 100, maxLife= 100;
 	
 	private int frames = 0, maxFrames = 5;
@@ -109,6 +112,23 @@ public class Player extends Entity{
 			}
 			
 			BulletShoot bullet = new BulletShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, 0);
+			Game.bullets.add(bullet);
+		}
+		
+		if(mouseShoot && hasGun && ammo > 0) {
+			
+			ammo--;
+			mouseShoot = false;
+			
+			double angle = Math.atan2(mouseY - (this.getY() + 8 - Camera.y), mouseX - (this.getX() + 8 - Camera.x));
+			
+			
+			double dx = Math.cos(angle);
+			double dy = Math.sin(angle);
+			int px = 8;
+			int py = 8;
+						
+			BulletShoot bullet = new BulletShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
 			Game.bullets.add(bullet);
 		}
 		

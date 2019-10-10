@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,11 +23,12 @@ import com.herkulstudios.entities.Entity;
 import com.herkulstudios.entities.Player;
 import com.herkulstudios.graficos.Spritesheet;
 import com.herkulstudios.graficos.UI;
+import com.herkulstudios.world.Camera;
 import com.herkulstudios.world.World;
 
 
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
@@ -52,6 +55,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		rand = new Random();
 		addKeyListener(this);
+		addMouseListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
 		
@@ -268,6 +272,38 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = false;
 		}
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		player.mouseShoot = true;
+		player.mouseX = (e.getX() / 3);
+		player.mouseY = (e.getY() / 3);
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		player.mouseShoot = false;
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
 		
 	}
 	
