@@ -16,6 +16,8 @@ public class Enemy extends Entity {
 	private int maskx = 8, masky = 8, maskw = 10, maskh = 10;
 	private int frames = 0, maxFrames = 20;
 	private int index = 0, maxIndex = 1;
+	private int life = 2;
+	
 	private BufferedImage[] sprites;
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
@@ -56,7 +58,6 @@ public class Enemy extends Entity {
 
 		}
 		
-
 		
 		frames++;
 		
@@ -70,6 +71,35 @@ public class Enemy extends Entity {
 				index = 0;
 			}
 		}
+		
+		CollidingWithBullet();
+		CheckAndIfTrueDEATH();
+		
+	}
+	
+	public void CheckAndIfTrueDEATH() {
+		if(life <= 0) {
+			Game.entities.remove(this);
+			return;
+		}
+	}
+	
+	public void CollidingWithBullet() {
+		
+		for(int i = 0; i < Game.bullets.size(); i++) {
+			Entity e = Game.bullets.get(i);
+			if(e instanceof BulletShoot) {
+				
+				if(Entity.isColliding(this, e)) {
+					life--;
+					Game.bullets.remove(i);
+					return;
+				}
+				
+			}
+		}
+		
+	
 	}
 	
 	public boolean isCollidingWithPlayer() {
