@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
 
-	private final int SCALE = 3;
+	
 	private BufferedImage image;
 	
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
@@ -44,9 +44,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean showMessageGameOver = true;
 	private boolean restartGame = false;
 	
-	public static String gameState = "NORMAL";
+	public static String gameState = "GAME_OVER";
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
+	public static final int SCALE = 3;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<BulletShoot> bullets;
@@ -55,7 +56,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	
 	public UI ui;
+	public Menu menu;
 	
 	
 	
@@ -77,11 +80,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 		world = new World("/level1.png");
 		
+		menu = new Menu();
+		
 
 	}
 	
 	public void initFrame(){
-		frame = new JFrame("Meu Jogo");
+		frame = new JFrame("Game");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
@@ -150,7 +155,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		else if(gameState == "GAME_OVER") {
 			this.framesGameOver++;
 			
-			if(this.framesGameOver == 30) {
+			if(this.framesGameOver == 5) {
 				
 				this.framesGameOver = 0;
 				
@@ -170,6 +175,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				String newWorld = "level" + CUR_LEVEL + ".png";
 				World.RestartGame(newWorld);
 			}
+		}
+		else if (gameState == "MENU") {
+			menu.update();
 		}
 			
 	}
@@ -235,12 +243,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
 			
 			g.setFont(new Font("arial", Font.BOLD, 36));
-			g.setColor(Color.white);
-			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 50, (HEIGHT*SCALE) / 2 - 20);
+			g.setColor(Color.red);
+			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 95, (HEIGHT*SCALE) / 2 - 20);
 			
+			g.setColor(Color.white);
 			g.setFont(new Font("arial", Font.BOLD, 32));
 			if(showMessageGameOver)
 				g.drawString(">Press ENTER to restart<", (WIDTH*SCALE) / 2 - 200, (HEIGHT*SCALE) / 2 + 40);
+		}
+		else if (gameState == "MENU") {
+			menu.render(g);
 		}
 		
 		bs.show();
@@ -300,10 +312,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_UP ||
 				e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
+			
+			if(gameState == "MENU") {
+				menu.up = true;
+			}
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_DOWN ||
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+			
+			if(gameState == "MENU") {
+				menu.down = true;
+			}
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_X) {
