@@ -44,7 +44,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean showMessageGameOver = true;
 	private boolean restartGame = false;
 	
-	public static String gameState = "GAME_OVER";
+	public static String gameState = "MENU";
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	public static final int SCALE = 3;
@@ -291,6 +291,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		stop();
 	}
 
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 
@@ -330,9 +331,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			player.shoot = true;
 		}
 		
-		if(e.getKeyCode() == KeyEvent.VK_ENTER && !restartGame)
+		if(e.getKeyCode() == KeyEvent.VK_ENTER && !restartGame && gameState == "GAME_OVER")
 			restartGame = true;
 		
+		if(e.getKeyCode() == KeyEvent.VK_ENTER && gameState == "MENU")
+			menu.enter = true;
+		
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE && gameState == "NORMAL") {
+			gameState = "MENU";
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && gameState == "MENU")
+			gameState = "NORMAL";
 	}
 
 	@Override

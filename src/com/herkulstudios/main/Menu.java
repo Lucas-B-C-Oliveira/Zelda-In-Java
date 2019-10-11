@@ -3,15 +3,16 @@ package com.herkulstudios.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Menu {
 	
-	public String[] options = {"New Game", "Load Game", "Exit"};
+	public String[] options = {"Play Game", "Load Game", "Exit"};
 	
 	public int currentOption = 0;
 	public int maxOption = options.length -1;
 	
-	public boolean down, up;
+	public boolean down, up, enter;
 	
 	
 	public void update() {
@@ -29,11 +30,29 @@ public class Menu {
 				currentOption = maxOption;
 			
 		}
+		else if(enter) {
+			enter = false;
+			
+			if(options[currentOption] == "Play Game") {
+				Game.gameState = "NORMAL";
+			}
+			else if(options[currentOption] == "Load Game") {
+
+			}
+			else if(options[currentOption] == "Exit") {
+				System.exit(1);
+			}
+		}
 	}
 	
 	public void render(Graphics g) {
 		
-		g.setColor(Color.black);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.black);
+		g2.setColor(new Color(0, 0, 0, 220));
+		
+		
+		
 		g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
 		
 		g.setColor(Color.blue);
@@ -48,7 +67,7 @@ public class Menu {
 		g.drawString(options[1], (Game.WIDTH * Game.SCALE) / 2 - 70, (Game.HEIGHT * Game.SCALE) - 400 / 2);
 		g.drawString(options[2], (Game.WIDTH * Game.SCALE) / 2 - 35, (Game.HEIGHT * Game.SCALE) - 300 / 2);
 		
-		if(options[currentOption] == "New Game") {
+		if(options[currentOption] == "Play Game") {
 			g.drawString(">", (Game.WIDTH * Game.SCALE) / 2 - 110, (Game.HEIGHT * Game.SCALE) - 500 / 2);
 			g.drawString("<", (Game.WIDTH * Game.SCALE) / 2 +  83, (Game.HEIGHT * Game.SCALE) - 500 / 2);
 			g.setColor(Color.white);
