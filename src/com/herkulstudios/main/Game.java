@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -36,6 +37,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private final int SCALE = 3;
 	private BufferedImage image;
 	
+	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
+	
+	public static String gameState = "NORMAL";
 
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
@@ -67,7 +71,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
-		world = new World("/map.png");
+		world = new World("/level1.png");
 		
 
 	}
@@ -109,18 +113,39 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public void update() {
 		
-		//####### Entitie's Update
-		
-		for(int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.update();
+		if(gameState == "NORMAL") {
+			
+			//####### Entitie's Update
+			
+			for(int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.update();
+			}
+			
+			for(int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).update();
+			}
+			
+			//########################
+			
+			//####### Check All Enemys Death
+			
+			if(enemies.size() == 0) {
+				if(CUR_LEVEL > MAX_LEVEL) {
+					CUR_LEVEL = 1;
+				}
+				CUR_LEVEL++;
+				
+				String newWorld = "level" + CUR_LEVEL + ".png";
+				World.RestartGame(newWorld);
+				
+			}
+			
+			//########################
 		}
-		
-		for(int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).update();
+		else if(gameState == "GAME_OVER") {
+			
 		}
-		
-		//########################
 			
 	}
 	
@@ -174,10 +199,23 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		g.setFont(new Font("arial", Font.BOLD, 20));
 		
+		g.setFont(new Font("arial", Font.BOLD, 20));
 		g.setColor(Color.white);
 		g.drawString("Ammo: " + player.ammo, 570, 20);
+		
+		if(gameState == "GAME_OVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 0, 0, 100));
+			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			
+			g.setFont(new Font("arial", Font.BOLD, 36));
+			g.setColor(Color.white);
+			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 50, (HEIGHT*SCALE) / 2 - 20);
+			
+			g.setFont(new Font("arial", Font.BOLD, 32));
+			g.drawString(">Press ENTER to restart<", (WIDTH*SCALE) / 2 - 200, (HEIGHT*SCALE) / 2 + 40);
+		}
 		
 		bs.show();
 	}

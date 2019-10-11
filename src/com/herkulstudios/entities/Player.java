@@ -82,12 +82,7 @@ public class Player extends Entity{
 	private void CheckDeath() {
 		
 		if(Game.player.life <= 0) {
-			Game.entities = new ArrayList<Entity>();
-			Game.enemies = new ArrayList<Enemy>();
-			Game.spritesheet = new Spritesheet("/spritesheet.png");
-			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
-			Game.entities.add(Game.player);
-			Game.world = new World("/map.png");
+			Game.gameState = "GAME_OVER";
 		}
 		
 	}

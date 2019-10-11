@@ -95,6 +95,7 @@ public class Enemy extends Entity {
 	
 	public void CheckAndIfTrueDEATH() {
 		if(life <= 0) {
+			Game.enemies.remove(this);
 			Game.entities.remove(this);
 			return;
 		}
