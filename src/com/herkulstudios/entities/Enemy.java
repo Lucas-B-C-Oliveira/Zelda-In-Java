@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.herkulstudios.main.Game;
+import com.herkulstudios.main.Sound;
 import com.herkulstudios.world.Camera;
 import com.herkulstudios.world.World;
 
@@ -54,6 +55,7 @@ public class Enemy extends Entity {
 
 			
 			if(Game.rand.nextInt(100) < 10) {
+				Sound.hurtEffect.play();
 				Game.player.isDamaged = true;
 				Game.player.life-= Game.rand.nextInt(2);
 			}
