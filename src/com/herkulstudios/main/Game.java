@@ -33,14 +33,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
-	private boolean isRunning;
+
 	private final int SCALE = 3;
 	private BufferedImage image;
 	
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
+	private int framesGameOver = 0;
+	
+	private boolean isRunning;
+	private boolean showMessageGameOver = true;
+	private boolean restartGame = false;
 	
 	public static String gameState = "NORMAL";
-
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	public static List<Entity> entities;
@@ -144,7 +148,28 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			//########################
 		}
 		else if(gameState == "GAME_OVER") {
+			this.framesGameOver++;
 			
+			if(this.framesGameOver == 30) {
+				
+				this.framesGameOver = 0;
+				
+				if(this.showMessageGameOver)
+					showMessageGameOver = false;
+				else
+					showMessageGameOver = true;
+				
+			}
+			
+			if(restartGame) {
+				restartGame = false;
+				this.gameState = "NORMAL";
+				
+				CUR_LEVEL = 1;
+				
+				String newWorld = "level" + CUR_LEVEL + ".png";
+				World.RestartGame(newWorld);
+			}
 		}
 			
 	}
@@ -214,7 +239,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			g.drawString("Game Over", (WIDTH*SCALE) / 2 - 50, (HEIGHT*SCALE) / 2 - 20);
 			
 			g.setFont(new Font("arial", Font.BOLD, 32));
-			g.drawString(">Press ENTER to restart<", (WIDTH*SCALE) / 2 - 200, (HEIGHT*SCALE) / 2 + 40);
+			if(showMessageGameOver)
+				g.drawString(">Press ENTER to restart<", (WIDTH*SCALE) / 2 - 200, (HEIGHT*SCALE) / 2 + 40);
 		}
 		
 		bs.show();
@@ -283,6 +309,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if(e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
 		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_ENTER && !restartGame)
+			restartGame = true;
 		
 	}
 
