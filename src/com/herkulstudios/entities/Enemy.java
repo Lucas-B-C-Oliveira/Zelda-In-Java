@@ -23,6 +23,9 @@ public class Enemy extends Entity {
 	private boolean isDamaged = false;
 	
 	private BufferedImage[] sprites;
+	
+
+	
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);

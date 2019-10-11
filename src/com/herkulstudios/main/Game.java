@@ -301,6 +301,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
+		if(e.getKeyCode() == KeyEvent.VK_Z) {
+			player.jump = true;
+		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT ||
 				e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;

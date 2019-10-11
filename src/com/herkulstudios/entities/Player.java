@@ -1,5 +1,6 @@
 package com.herkulstudios.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import com.herkulstudios.world.World;
 
 public class Player extends Entity{
 	
+	public boolean jump = false, isJumping = false;
+	public boolean jumpUp = false, jumpDown = false;
 	public boolean left, right, down, up;
 	public boolean isDamaged = false;
 	public boolean shoot = false, mouseShoot = false;
@@ -18,8 +21,10 @@ public class Player extends Entity{
 	
 	public int ammo;
 	public int right_dir = 0, left_dir = 1;
-	public int dir = right_dir;
+	public int dir = right_dir; 
 	public int mouseX, mouseY;
+	public int z = 0;
+	public int jumpFrames = 50, jumpCurrent = 0;
 	
 	
 	public double life = 100, maxLife= 100;
@@ -33,6 +38,10 @@ public class Player extends Entity{
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	private BufferedImage playerDamage;
+	
+
+	
+
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -63,6 +72,40 @@ public class Player extends Entity{
 		cameraOffset();
 		shoot();
 		
+		if(jump) {
+			if(!isJumping) {
+				jump = false;
+				isJumping = true;
+				jumpUp = true;
+			}
+		}
+		
+		if(isJumping) {
+
+			
+			if(jumpUp) {
+				jumpCurrent += 2;
+			}
+			else if(jumpDown) {
+				jumpCurrent -=2;
+				
+				if(jumpCurrent <= 0) {
+					isJumping = false;
+					jumpDown = false;
+					jumpUp = false;
+				}
+				
+			}
+
+			
+			z = jumpCurrent;
+			
+			if( jumpCurrent >= jumpFrames) {
+				jumpUp = false;
+				jumpDown = true;
+			}
+			
+		}
 		
 
 	}
@@ -248,24 +291,29 @@ public class Player extends Entity{
 		if(!isDamaged) {
 			if(dir == right_dir) {
 				
-				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				
 				if(hasGun) {
-					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + 5, this.getY() - Camera.y + 2, null);
+					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + 5, (this.getY() - Camera.y + 2) - z, null);
 				}
 				
 			}
 			else if(dir == left_dir) {
 				
-				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				
 				if(hasGun) {
-					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - 5, this.getY() - Camera.y + 2, null);
+					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - 5, (this.getY() - Camera.y + 2) - z, null);
 				}
 			}
 		}
 		else {
-			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y - z, null);
+		}
+		
+		if(isJumping) {
+			g.setColor(Color.black);
+			g.fillOval(this.getX() - Camera.x + 8, this.getY() - Camera.y + 16, 8, 8);
 		}
 
 	}
