@@ -57,6 +57,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Player player;
 	public static Random rand;
 	
+	public boolean saveGame = false;
+	
 	public UI ui;
 	public Menu menu;
 	
@@ -151,6 +153,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			
 			//########################
+			
+			if(this.saveGame) {
+				this.saveGame = false;
+				String[] opt1 = {"level" , "vida"};
+				int[] opt2 = {this.CUR_LEVEL, (int) player.life};
+				Menu.saveGame(opt1, opt2, 10);
+				System.out.print("Jogo Salvo");
+			}
+			
+			
 		}
 		else if(gameState == "GAME_OVER") {
 			this.framesGameOver++;
@@ -300,6 +312,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			if(gameState == "NORMAL")
+				this.saveGame = true;
+			
+		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_Z) {
 			player.jump = true;
