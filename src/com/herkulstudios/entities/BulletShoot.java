@@ -15,8 +15,8 @@ public class BulletShoot extends Entity {
 	
 	private double spd = 4;
 	
-	public BulletShoot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy) {
-		super(x, y, width, height, sprite);
+	public BulletShoot(int x, int y, int z, int width, int height, BufferedImage sprite, double dx, double dy) {
+		super(x, y, z, width, height, sprite);
 		this.dx = dx;
 		this.dy = dy;
 	}

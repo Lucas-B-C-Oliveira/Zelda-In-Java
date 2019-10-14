@@ -18,7 +18,7 @@ public class Entity {
 	public static BufferedImage GUN_RIGHT = Game.spritesheet.getSprite(128, 0, 16, 16);
 	public static BufferedImage GUN_LEFT = Game.spritesheet.getSprite(128+16, 0, 16, 16);
 	
-	protected int z;
+	protected double z;
 	protected double x;
 	protected double y;
 	protected int width;
@@ -28,10 +28,11 @@ public class Entity {
 	
 	private BufferedImage sprite;
 	
-	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
+	public Entity(int x, int y, int z, int width, int height, BufferedImage sprite) {
 		
 		this.x = x;
 		this.y = y;
+		this.z = z;
 		this.width = width;
 		this.height = height;
 		this.sprite = sprite;
@@ -54,12 +55,20 @@ public class Entity {
 		this.x = newX;
 	}
 	
+	public void setZ(int newZ) {
+		this.z = newZ;
+	}
+	
 	public void setY(int newY) {
 		this.y = newY;
 	}
 	
 	public int getX() {
 		return (int)this.x;
+	}
+	
+	public int getZ() {
+		return (int)this.z;
 	}
 	
 	public int getY() {
@@ -82,9 +91,14 @@ public class Entity {
 		Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY, e1.maskWidth, e1.maskHeight);
 		Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskWidth, e2.maskHeight);
 		
-		if(e1Mask.intersects(e2Mask) && e1.z == e2.z) {
+
+		
+		if(e1Mask.intersects(e2Mask) && e1.getZ() == e2.getZ()) {
+			
 			return true;
 		}
+		
+		
 		
 		return false;
 	}

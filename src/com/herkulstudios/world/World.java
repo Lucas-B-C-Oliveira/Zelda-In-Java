@@ -59,7 +59,7 @@ public class World {
 						
 					}
 					else if(pixelAtual == 0xFFFF0000) {
-						Enemy en = new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_PACK_ENTITY);
+						Enemy en = new Enemy(xx * 16, yy * 16, 0, 16, 16, Entity.ENEMY_PACK_ENTITY);
 						Game.entities.add(en);
 						Game.enemies.add(en);
 
@@ -67,19 +67,19 @@ public class World {
 					}
 					else if (pixelAtual == 0xFFFF4E00) {
 						
-						Game.entities.add(new Weapon(xx * 16, yy * 16, 16, 16, Entity.WEAPON_PACK_ENTITY));
+						Game.entities.add(new Weapon(xx * 16, yy * 16, 0, 16, 16, Entity.WEAPON_PACK_ENTITY));
 						
 					}
 					else if (pixelAtual == 0xFFFF7CAE) {
 						//LifePAck
-						Lifepack pack = new Lifepack(xx * 16, yy * 16, 16, 16, Entity.LIFE_PACK_ENTITY);
+						Lifepack pack = new Lifepack(xx * 16, yy * 16, 0, 16, 16, Entity.LIFE_PACK_ENTITY);
 						pack.setMask(8 , 8 , 8 , 8);
 						Game.entities.add(pack);
 						
 					}
 					else if (pixelAtual == 0xFFFFFB49) {
 						//Bullet
-						Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_PACK_ENTITY));
+						Game.entities.add(new Bullet(xx * 16, yy * 16, 0, 16, 16, Entity.BULLET_PACK_ENTITY));
 					}
 				}
 				
@@ -111,11 +111,18 @@ public class World {
 				 (tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile) || 
 				 (tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile))); */
 		
-		return !((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile) ||
+		if(!((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile) ||
 				 (tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile) ||
 				 (tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile) || 
-				 (tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile));
+				 (tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile))) {
+			
+			return true;
+		}
+		if(Game.player.getZ() > 0) {
+			return true;
+		}
 		
+		return false;
 
 	}
 	
@@ -123,7 +130,7 @@ public class World {
 		Game.entities = new ArrayList<Entity>();
 		Game.enemies = new ArrayList<Enemy>();
 		Game.spritesheet = new Spritesheet("/spritesheet.png");
-		Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+		Game.player = new Player(0, 0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
 		Game.entities.add(Game.player);
 		Game.world = new World("/"+level);
 	}

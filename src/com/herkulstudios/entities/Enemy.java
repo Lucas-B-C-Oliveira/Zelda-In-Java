@@ -27,14 +27,15 @@ public class Enemy extends Entity {
 
 	
 
-	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, null);
+	public Enemy(int x, int y, int z, int width, int height, BufferedImage sprite) {
+		super(x, y, z, width, height, null);
 		sprites = new BufferedImage[2];
 		sprites[0] = Game.spritesheet.getSprite(112, 16, 16, 16);
 		sprites[1] = Game.spritesheet.getSprite(112 + 16, 16, 16, 16);
 	}
 	
 	public void update() {
+
 		
 		//if( Game.rand.nextInt(100) < 50) FOR RANDOMIZE ENEMY's MOVE
 		if(!this.isCollidingWithPlayer()) {
@@ -51,7 +52,7 @@ public class Enemy extends Entity {
 			}
 			else if ((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed)) && !isColliding(this.getX(), (int)(y - speed))) {
 				y -= speed;
-			}
+			} 
 		}
 		else {
 			
