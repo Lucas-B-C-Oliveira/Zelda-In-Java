@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import com.herkulstudios.entities.BulletShoot;
@@ -38,7 +39,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
-
 	
 	private BufferedImage image;
 	
@@ -66,11 +66,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public int mouseX,mouseY;
 	public int[] pixels;
+	public int[] lightMapPixels;
 	
 	public UI ui;
 	public Menu menu;
 	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelart.ttf");
 	public Font newFont;
+	public BufferedImage lightMap;
 	
 	
 	
@@ -85,7 +87,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		try{ lightMap = ImageIO.read(getClass().getResource("/lightmap.png")); } catch(IOException e){ e.printStackTrace(); }
+		lightMapPixels = new int [lightMap.getWidth() * lightMap.getHeight()];
+		lightMap.getRGB(0, 0, lightMap.getWidth(), lightMap.getHeight(), lightMapPixels, 0, lightMap.getWidth());
 		pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+		
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
@@ -162,6 +169,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 		}
 	} */
+	
+	public void applyLight() {
+		
+		for (int xx = 0; xx < Game.WIDTH; xx++) {
+			
+			for (int yy = 0; yy < Game.HEIGHT; yy++) {
+				
+				if(lightMapPixels[xx + (yy * Game.WIDTH)] == 0xffffffff) {
+					pixels[xx + (yy * Game.WIDTH)] = 0;
+				}
+				
+			}
+			
+		}
+		
+	}
 	
 	public void update() {
 		
@@ -272,6 +295,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		for(int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).render(g);
 		}
+		
+		//########################
+		
+		//####### Light Render
+		
+		applyLight();
 		
 		//########################
 		
