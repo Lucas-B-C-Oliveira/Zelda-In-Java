@@ -37,34 +37,36 @@ public class Enemy extends Entity {
 	public void update() {
 
 		
-		//if( Game.rand.nextInt(100) < 50) FOR RANDOMIZE ENEMY's MOVE
-		if(!this.isCollidingWithPlayer()) {
-			
-			if ((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY()) && !isColliding((int)(x + speed), this.getY())) {
-				x += speed;
+		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 75) {
+			//if( Game.rand.nextInt(100) < 50) FOR RANDOMIZE ENEMY's MOVE
+			if(!this.isCollidingWithPlayer()) {
+				
+				if ((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY()) && !isColliding((int)(x + speed), this.getY())) {
+					x += speed;
+				}
+				else if ((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY()) && !isColliding((int)(x - speed), this.getY())) {
+					x -= speed;
+				}
+				
+				if ((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed)) && !isColliding(this.getX(), (int)(y + speed))) {
+					y += speed;
+				}
+				else if ((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed)) && !isColliding(this.getX(), (int)(y - speed))) {
+					y -= speed;
+				} 
 			}
-			else if ((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY()) && !isColliding((int)(x - speed), this.getY())) {
-				x -= speed;
-			}
-			
-			if ((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed)) && !isColliding(this.getX(), (int)(y + speed))) {
-				y += speed;
-			}
-			else if ((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed)) && !isColliding(this.getX(), (int)(y - speed))) {
-				y -= speed;
-			} 
-		}
-		else {
-			
+			else {
+				
 
-			
-			if(Game.rand.nextInt(100) < 10) {
-				Sound.hurtEffect.play();
-				Game.player.isDamaged = true;
-				Game.player.life-= Game.rand.nextInt(2);
+				
+				if(Game.rand.nextInt(100) < 10) {
+					Sound.hurtEffect.play();
+					Game.player.isDamaged = true;
+					Game.player.life-= Game.rand.nextInt(2);
+				}
+
+
 			}
-
-
 		}
 		
 		
