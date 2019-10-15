@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -32,7 +33,7 @@ import com.herkulstudios.world.World;
 
 
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	private Thread thread;
@@ -62,6 +63,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public boolean saveGame = false;
 	
+	public int mouseX,mouseY;
+	
 	public UI ui;
 	public Menu menu;
 	public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelart.ttf");
@@ -74,6 +77,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
 		
@@ -286,6 +290,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			menu.render(g);
 		}
 		
+		Graphics2D g2 = (Graphics2D) g;
+		double angleMouse = Math.atan2( 200 + 25 - mouseY, 200 + 25 - mouseX);
+		g2.rotate(angleMouse, 200 + 25, 200 + 1);
+		g.fillRect(200, 200, 50, 1);
+		
 		bs.show();
 	}
 	
@@ -441,6 +450,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseExited(MouseEvent e) {
 		
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		this.mouseX = e.getX();
+		this.mouseY = e.getY();
 		
 	}
 	
