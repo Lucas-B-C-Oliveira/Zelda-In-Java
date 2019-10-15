@@ -145,13 +145,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 	}
 	
-	public void drawRectangleExample() {
+	/*
+	public void drawRectangleExample(int xoff, int yoff) {
 		for(int xx = 0; xx < 32; xx++) {
 			
 			for(int yy = 0; yy < 32; yy++) {
 				
-				int xOff = xx + 40;
-				int yOff = yy + 40;
+				int xOff = xx + xoff;
+				int yOff = yy + yoff;
 				
 				if(xOff < 0 || yOff < 0 || xOff >= WIDTH || yOff >= HEIGHT)
 					continue;
@@ -160,11 +161,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			
 		}
-	}
+	} */
 	
 	public void update() {
 		
 		if(gameState == "NORMAL") {
+			
 			
 			//####### Entitie's Update
 			
@@ -283,7 +285,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 		g.dispose();
 		g = bs.getDrawGraphics();
-		drawRectangleExample();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		
 		g.setFont(new Font("arial", Font.BOLD, 20));
