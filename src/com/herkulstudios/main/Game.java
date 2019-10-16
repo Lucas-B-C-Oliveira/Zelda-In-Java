@@ -62,12 +62,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	public static BufferedImage miniMapa;
+	public static int[] miniMapaPixels;
 	
 	public boolean saveGame = false;
 	
 	public int mouseX,mouseY;
 	public int[] pixels;
 	public int[] lightMapPixels;
+
 	
 	public UI ui;
 	public Menu menu;
@@ -101,6 +104,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		
+		miniMapa = new BufferedImage(World.WIDTH , World.HEIGHT , BufferedImage.TYPE_INT_RGB);
+		miniMapaPixels = ((DataBufferInt)miniMapa.getRaster().getDataBuffer()).getData();
 		
 		/*
 		try {
@@ -348,10 +354,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			menu.render(g);
 		}
 		
+		/*  Renderizar uma linha que aponta para onde o mouse está apontando
 		Graphics2D g2 = (Graphics2D) g;
 		double angleMouse = Math.atan2( 200 + 25 - mouseY, 200 + 25 - mouseX);
 		g2.rotate(angleMouse, 200 + 25, 200 + 1);
-		g.fillRect(200, 200, 50, 1);
+		g.fillRect(200, 200, 50, 1); */
+		
+		World.renderMiniMap();
+		g.drawImage(miniMapa, 615, 40, World.WIDTH * 5, World.HEIGHT * 5, null);
 		
 		bs.show();
 	}
