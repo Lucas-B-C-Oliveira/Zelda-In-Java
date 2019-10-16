@@ -1,10 +1,13 @@
 package com.herkulstudios.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import com.herkulstudios.main.Game;
+import com.herkulstudios.main.Sound;
 import com.herkulstudios.world.AStar;
 import com.herkulstudios.world.Camera;
 import com.herkulstudios.world.Vector2i;
@@ -34,6 +37,10 @@ public class Enemy extends Entity {
 	}
 	
 	public void update() {
+		maskX = 5;
+		maskY = 5;
+		maskWidth = 8;
+		maskHeight = 8;
 
 		/*          Primeiro Algoritmo do inimigo buscar ir ao encontro do Player - Extremamente simples, sendo apenas if e else e incrementando o x e y
 		 * 
@@ -72,15 +79,40 @@ public class Enemy extends Entity {
 		#######################################################################################################################################################################
 		*/
 		
-		if(path == null || path.size() == 0) {
+		if(!this.isCollidingWithPlayer()) {
+			
+			if(path == null || path.size() == 0) {
+				
+				Vector2i start = new Vector2i((int)(x / 16) , (int)(y / 16));
+				Vector2i end = new Vector2i((int)(Game.player.x / 16) , (int)(Game.player.y / 16));
+				
+				path = AStar.findPath(Game.world, start, end);
+			}
+			
+		}
+		else {
+			
+			if(Game.rand.nextInt(100) < 10) {
+				Sound.hurtEffect.play();
+				Game.player.isDamaged = true;
+				Game.player.life-= Game.rand.nextInt(2);
+			}
+			
+		}
+		
+		
+
+		if(new Random().nextInt(100) < 90)
+			followPath(path);
+		
+		if(new Random().nextInt(100) < 5) {
 			
 			Vector2i start = new Vector2i((int)(x / 16) , (int)(y / 16));
 			Vector2i end = new Vector2i((int)(Game.player.x / 16) , (int)(Game.player.y / 16));
 			
 			path = AStar.findPath(Game.world, start, end);
+			
 		}
-		
-		followPath(path);
 		
 		frames++;
 		
@@ -157,7 +189,7 @@ public class Enemy extends Entity {
 			g.drawImage(sprites[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		else
 			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
-		//g.setColor(Color.blue);
-		//g.fillRect(this.getX() - Camera.x + maskx, this.getY() + masky - Camera.y, maskw, maskh);
+		g.setColor(Color.blue);
+		g.fillRect(this.getX() - Camera.x + maskX, this.getY() + maskY - Camera.y, maskWidth, maskHeight);
 	}
 }

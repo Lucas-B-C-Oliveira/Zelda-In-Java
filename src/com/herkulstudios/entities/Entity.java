@@ -104,17 +104,17 @@ public class Entity {
 				//xprev = x;
 				//yprev = y;
 				
-				if(x < target.x * 16) {
+				if(x < target.x * 16 && !isColliding(this.getX() + 1, this.getY())) {
 					x++;
 				}
-				else if (x > target.x * 16) {
+				else if (x > target.x * 16 && !isColliding(this.getX() - 1, this.getY())) {
 					x--;
 				}
 				
-				if(y < target.y * 16 ) {
+				if(y < target.y * 16 && !isColliding(this.getX(), this.getY() + 1)) {
 					y++;
 				}
-				else if (y > target.y * 16 ) {
+				else if (y > target.y * 16 && !isColliding(this.getX(), this.getY() - 1)) {
 					y--;
 				}
 				
