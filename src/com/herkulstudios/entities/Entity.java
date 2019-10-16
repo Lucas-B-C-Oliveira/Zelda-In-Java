@@ -3,6 +3,7 @@ package com.herkulstudios.entities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.List;
 
 import com.herkulstudios.main.Game;
@@ -31,6 +32,8 @@ public class Entity {
 	
 	private BufferedImage sprite;
 	
+	public int depth;
+	
 	public Entity(int x, int y, int z, int width, int height, BufferedImage sprite) {
 		
 		this.x = x;
@@ -46,6 +49,22 @@ public class Entity {
 		this.maskHeight = height;
 		
 	}
+	
+	public static Comparator<Entity> nodeSorter = new Comparator<Entity>() {
+		
+		@Override
+		public int compare(Entity n0, Entity n1) {
+			
+			if(n1.depth < n0.depth)
+				return + 1;
+			
+			if(n1.depth > n0.depth)
+				return - 1;
+			
+			return 0;
+		}
+		
+	};
 	
 	public void setMask(int maskX, int maskY, int maskWidth, int maskHeight) {
 		this.maskX = maskX;

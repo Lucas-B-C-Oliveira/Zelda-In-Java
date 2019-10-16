@@ -41,6 +41,7 @@ public class Enemy extends Entity {
 		maskY = 5;
 		maskWidth = 8;
 		maskHeight = 8;
+		depth = 0;
 
 		/*          Primeiro Algoritmo do inimigo buscar ir ao encontro do Player - Extremamente simples, sendo apenas if e else e incrementando o x e y
 		 * 

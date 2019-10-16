@@ -62,6 +62,7 @@ public class Player extends Entity{
 	
 	public void update() {
 		
+		depth = 1;
 		
 		CheckDeath();
 		move();
