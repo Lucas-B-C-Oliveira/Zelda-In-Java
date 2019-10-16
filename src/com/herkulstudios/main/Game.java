@@ -170,7 +170,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 	} */
 	
-	public void applyLight() {
+	public void applyLight() { /*
 		
 		for (int xx = 0; xx < Game.WIDTH; xx++) {
 			
@@ -182,7 +182,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				
 			}
 			
-		}
+		} */
 		
 	}
 	
@@ -254,6 +254,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 		}
 		else if (gameState == "MENU") {
+			//player.cameraOffset(); Colocar o método como publico.
 			menu.update();
 		}
 			

@@ -1,12 +1,14 @@
 package com.herkulstudios.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import com.herkulstudios.main.Game;
 import com.herkulstudios.world.Camera;
+import com.herkulstudios.world.Node;
+import com.herkulstudios.world.Vector2i;
 
 public class Entity {
 	
@@ -23,8 +25,9 @@ public class Entity {
 	protected double y;
 	protected int width;
 	protected int height;
+	protected List<Node> path;
 	
-	private int maskX, maskY, maskWidth, maskHeight;
+	public int maskX, maskY, maskWidth, maskHeight;
 	
 	private BufferedImage sprite;
 	
@@ -89,6 +92,57 @@ public class Entity {
 	
 	public double calculateDistance(int x1, int y1, int x2, int y2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	}
+	
+	public void followPath(List<Node> path) {
+		
+		if(path != null) {
+			
+			if(path.size() > 0) {
+				Vector2i target = path.get(path.size() - 1).tile;
+				
+				//xprev = x;
+				//yprev = y;
+				
+				if(x < target.x * 16) {
+					x++;
+				}
+				else if (x > target.x * 16) {
+					x--;
+				}
+				
+				if(y < target.y * 16 ) {
+					y++;
+				}
+				else if (y > target.y * 16 ) {
+					y--;
+				}
+				
+				if(x == target.x * 16 && y == target.y * 16) {
+					path.remove(path.size() - 1);
+				}
+				
+			}
+		}
+			
+	}
+	
+	public boolean isColliding(int xnext, int ynext) {
+		Rectangle enemyCurrent = new Rectangle(xnext + maskX, ynext + maskY, maskWidth, maskHeight);
+		
+		for(int i = 0; i < Game.enemies.size(); i++) {
+			Enemy e = Game.enemies.get(i);
+			if (e == this)
+				continue;
+			
+			Rectangle targetEnemy = new Rectangle(e.getX() + maskX, e.getY() + maskY, maskWidth, maskHeight);
+			if(enemyCurrent.intersects(targetEnemy)) {
+				return true;
+			}
+			
+		}
+		
+		return false;
 	}
 	
 	public static boolean isColliding(Entity e1, Entity e2) {

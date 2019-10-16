@@ -1,20 +1,19 @@
 package com.herkulstudios.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.herkulstudios.main.Game;
-import com.herkulstudios.main.Sound;
+import com.herkulstudios.world.AStar;
 import com.herkulstudios.world.Camera;
-import com.herkulstudios.world.World;
+import com.herkulstudios.world.Vector2i;
 
 public class Enemy extends Entity {
 	
 	private double speed = 1;
 	
-	private int maskx = 8, masky = 8, maskw = 10, maskh = 10;
+	//private int maskx = 8, masky = 8, maskw = 10, maskh = 10;
 	private int frames = 0, maxFrames = 20;
 	private int index = 0, maxIndex = 1;
 	private int life = 2;
@@ -36,7 +35,9 @@ public class Enemy extends Entity {
 	
 	public void update() {
 
-		
+		/*          Primeiro Algoritmo do inimigo buscar ir ao encontro do Player - Extremamente simples, sendo apenas if e else e incrementando o x e y
+		 * 
+		 * #####################################################################################################################################################
 		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 75) {
 			//if( Game.rand.nextInt(100) < 50) FOR RANDOMIZE ENEMY's MOVE
 			if(!this.isCollidingWithPlayer()) {
@@ -67,8 +68,19 @@ public class Enemy extends Entity {
 
 
 			}
+		} 
+		#######################################################################################################################################################################
+		*/
+		
+		if(path == null || path.size() == 0) {
+			
+			Vector2i start = new Vector2i((int)(x / 16) , (int)(y / 16));
+			Vector2i end = new Vector2i((int)(Game.player.x / 16) , (int)(Game.player.y / 16));
+			
+			path = AStar.findPath(Game.world, start, end);
 		}
 		
+		followPath(path);
 		
 		frames++;
 		
@@ -132,28 +144,12 @@ public class Enemy extends Entity {
 	
 	public boolean isCollidingWithPlayer() {
 		
-		Rectangle enemyCurrent = new Rectangle(this.getX() + maskx, this.getY() + masky, maskw, maskh);
+		Rectangle enemyCurrent = new Rectangle(this.getX() + maskX, this.getY() + maskY, maskWidth, maskHeight);
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 		return enemyCurrent.intersects(player);
 	}
 	
-	public boolean isColliding(int xnext, int ynext) {
-		Rectangle enemyCurrent = new Rectangle(xnext + maskx, ynext + masky, maskw, maskh);
-		
-		for(int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
-			if (e == this)
-				continue;
-			
-			Rectangle targetEnemy = new Rectangle(e.getX() + maskx, e.getY() + masky, maskw, maskh);
-			if(enemyCurrent.intersects(targetEnemy)) {
-				return true;
-			}
-			
-		}
-		
-		return false;
-	}
+
 	
 	public void render(Graphics g) {
 		
