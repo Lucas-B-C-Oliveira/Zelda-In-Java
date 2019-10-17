@@ -217,10 +217,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				if(CUR_LEVEL > MAX_LEVEL) {
 					CUR_LEVEL = 1;
 				}
-				CUR_LEVEL++;
+				//CUR_LEVEL++;
 				
-				String newWorld = "level" + CUR_LEVEL + ".png";
-				World.RestartGame(newWorld);
+				//String newWorld = "level" + CUR_LEVEL + ".png";
+				//World.RestartGame(newWorld);
 				
 			}
 			
