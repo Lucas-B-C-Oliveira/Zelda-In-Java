@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -87,6 +88,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
+		//setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
 		initFrame();
 		
 		ui = new UI();
@@ -367,7 +369,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 	
 	public void run() {
-		
+		requestFocus();
 		long lastTime = System.nanoTime();
 		double amountOfFrames = 60.0;
 		double ns = 1000000000 / amountOfFrames;
